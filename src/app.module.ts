@@ -1,10 +1,36 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule } from '@nestjs/config';
+import { SequelizeModule } from '@nestjs/sequelize';
+
+import { VehicleTypesModule } from '@/vehicle-types/vehicle-types.module';
+import { ProductsModule } from '@/products/products.module';
+import { InsuranceQuotesModule } from './insurance-quotes/insurance-quotes.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot(),
+    SequelizeModule.forRoot({
+      dialect: 'mysql',
+      host: process.env.DATABASE_HOST,
+      port: process.env.PORT ? parseInt(process.env.PORT) : 3306,
+      username: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_NAME,
+      dialectOptions: {
+        ssl: {
+          require: true,
+        },
+      },
+      autoLoadModels: true,
+      synchronize: true,
+      define: {
+        timestamps: false,
+        underscored: true,
+      },
+    }),
+    VehicleTypesModule,
+    ProductsModule,
+    InsuranceQuotesModule,
+  ],
 })
 export class AppModule {}

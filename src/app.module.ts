@@ -5,6 +5,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { VehicleTypesModule } from '@/vehicle-types/vehicle-types.module';
 import { ProductsModule } from '@/products/products.module';
 import { InsuranceQuotesModule } from './insurance-quotes/insurance-quotes.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -34,5 +35,6 @@ import { InsuranceQuotesModule } from './insurance-quotes/insurance-quotes.modul
     ProductsModule,
     InsuranceQuotesModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

@@ -11,6 +11,8 @@ import { InsuranceQuotesModule } from './insurance-quotes/insurance-quotes.modul
     ConfigModule.forRoot(),
     SequelizeModule.forRoot({
       dialect: 'mysql',
+      // Solve the problem when deploying to Vercel
+      dialectModule: require('mysql2'),
       host: process.env.DATABASE_HOST,
       port: process.env.PORT ? parseInt(process.env.PORT) : 3306,
       username: process.env.DATABASE_USER,

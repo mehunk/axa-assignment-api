@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 
 import { Product } from './models/product.model';
@@ -26,15 +26,19 @@ export class ProductsService {
     });
   }
 
-  findOneByVehicleTypeId(
+  async findOneByVehicleTypeId(
     vehicleTypeId: number,
     productId: number,
   ): Promise<Product> {
-    return this.productModel.findOne({
+    const product = await this.productModel.findOne({
       where: {
         id: productId,
         vehicleTypeId,
       },
     });
+    if (!product) {
+      throw new HttpException('Product does not exist', 404);
+    }
+    return product;
   }
 }

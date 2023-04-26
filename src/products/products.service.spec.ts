@@ -1,4 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getModelToken } from '@nestjs/sequelize';
+
+import { Product } from './models/product.model';
 import { ProductsService } from './products.service';
 
 describe('ProductService', () => {
@@ -6,7 +9,13 @@ describe('ProductService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ProductsService],
+      providers: [
+        ProductsService,
+        {
+          provide: getModelToken(Product),
+          useValue: {},
+        },
+      ],
     }).compile();
 
     service = module.get<ProductsService>(ProductsService);
